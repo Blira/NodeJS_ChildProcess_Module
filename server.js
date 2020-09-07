@@ -1,10 +1,11 @@
 const { fork } = require("child_process");
 const EventEmitter = require('events');
+const numCPUs = require('os').cpus().length;
 
 const parentEmmiter = new EventEmitter();
 
 
-const cps = 2;
+const cps = numCPUs/2;
 let ccps = cps;
 
 parentEmmiter.on('cpEnd', () => {
