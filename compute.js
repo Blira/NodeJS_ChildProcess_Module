@@ -10,11 +10,11 @@ const longComputation = () => {
 
   return Buffer.from(JSON.stringify({
     messageType: 'endMsg',
-    message: `${process.pid} - Child Process on the block`
+    message: `Process ${process.pid} exited`
   }));
 };
 
-process.on('message', (msg) => {
+process.once('message', (msg) => {
   const endMsg = longComputation();
   process.send(endMsg);
 });

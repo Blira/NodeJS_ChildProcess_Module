@@ -5,7 +5,7 @@ const numCPUs = require('os').cpus().length;
 const parentEmmiter = new EventEmitter();
 
 
-const cps = numCPUs/2;
+const cps = numCPUs / 2;
 let ccps = cps;
 
 parentEmmiter.on('cpEnd', () => {
@@ -29,7 +29,6 @@ async function child() {
   compute.send("start");
 
   compute.on("message", (msg) => {
-
     const msgBuffer = Buffer.from(msg);
     const msgObj = JSON.parse(msgBuffer.toString());
     emitter.emit(msgObj.messageType, msgObj);
@@ -41,19 +40,5 @@ async function child() {
 
   emitter.on('endMsg', (msgObj) => {
     console.log(msgObj.message);
-    compute.emit('exit');
-  })
-
-  emitter.on('msg', (msg) => {
-    console.log(msg);
-  })
-
-
-  compute.once('exit', () => {
-    console.log(`${compute.pid} - Exiting...`);
-    compute.kill();
-    console.log(`${process.pid} - Child exited!`);
-    parentEmmiter.emit('cpEnd');
-
   })
 }
